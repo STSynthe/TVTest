@@ -33,10 +33,7 @@ jobs:
         vs-version: '17.0'
 
     - name: Sets
-      run: |
-        set
-        echo %cd%
-        echo ${{env.GITHUB_WORKSPACE}}
+      run: set
 
 #    - name: Pre-Build
 #      working-directory: ${{env.GITHUB_WORKSPACE}}
