@@ -7,7 +7,7 @@ name: MSBuild
 
 on:
   workflow_dispatch:
-  
+
 env:
   # Path to the solution file relative to the root of the project.
   SOLUTION_FILE_PATH: .
@@ -15,9 +15,9 @@ env:
   # Configuration type to build.
   # You can convert this to a build matrix if you need coverage of multiple configuration types.
   # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
-  BUILD_CONFIGURATION: Release
+  BUILD_CONFIGURATION: Release_MD
 
-  # 
+  # https://github.com/mstorsjo/fdk-aac
   GIT_FDK_AAC_REF: v2.0.3
 
 permissions:
@@ -48,12 +48,12 @@ jobs:
         cd LibISDB\Thirdparty\fdk-aac
         git fetch --depth 1 origin ${{env.GIT_FDK_AAC_REF}}
         git reset --hard FETCH_HEAD
-        cd ..\..\
-        msbuild -maxCpuCount -target:Build -property:Configuration="Release_MD" -property:Platform="x86" Projects\LibISDB.sln
-        msbuild -maxCpuCount -target:Build -property:Configuration="Release_MD" -property:Platform="x64" Projects\LibISDB.sln
+        cd ..\..\..\
+        msbuild -maxCpuCount -target:Build -property:Configuration=${{env.BUILD_CONFIGURATION}} -property:Platform="x86" src\Projects\LibISDB.sln
+        msbuild -maxCpuCount -target:Build -property:Configuration=${{env.BUILD_CONFIGURATION}} -property:Platform="x64" src\Projects\LibISDB.sln
 
-#    - name: Build
-#      working-directory: ${{env.GITHUB_WORKSPACE}}
+    - name: Build
+      working-directory: ${{env.GITHUB_WORKSPACE}}
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-#      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+      run: msbuild -maxCpuCount -target:Build -property:Configuration=${{env.BUILD_CONFIGURATION}} -property:Platform=Win32 src\TVTest.sln
