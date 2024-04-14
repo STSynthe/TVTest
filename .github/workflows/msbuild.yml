@@ -46,11 +46,13 @@ jobs:
         cd src
         git clone -b develop --depth 1 https://github.com/DBCTRADO/LibISDB.git LibISDB
         cd LibISDB\Thirdparty\fdk-aac
+        git init
+        git remote add origin https://github.com/mstorsjo/fdk-aac.git
         git fetch --depth 1 origin ${{env.GIT_FDK_AAC_REF}}
         git reset --hard FETCH_HEAD
         cd ..\..\..\
-        msbuild -maxCpuCount -target:Build -property:Configuration=${{env.BUILD_CONFIGURATION}} -property:Platform="x86" src\Projects\LibISDB.sln
-        msbuild -maxCpuCount -target:Build -property:Configuration=${{env.BUILD_CONFIGURATION}} -property:Platform="x64" src\Projects\LibISDB.sln
+        msbuild -maxCpuCount -target:Build -property:Configuration=${{env.BUILD_CONFIGURATION}} -property:Platform=x86 src\Projects\LibISDB.sln
+        msbuild -maxCpuCount -target:Build -property:Configuration=${{env.BUILD_CONFIGURATION}} -property:Platform=x64 src\Projects\LibISDB.sln
 
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
