@@ -17,6 +17,9 @@ env:
   # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
   BUILD_CONFIGURATION: Release
 
+  # 
+  GIT_FDK_AAC_REF: v2.0.3
+
 permissions:
   contents: read
 
@@ -37,8 +40,17 @@ jobs:
       run: |
         Get-ChildItem env:
 
-#    - name: Pre-Build
-#      working-directory: ${{env.GITHUB_WORKSPACE}}
+    - name: Pre-Build
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: |
+        cd src
+        git clone -b develop --depth 1 https://github.com/DBCTRADO/LibISDB.git LibISDB
+        cd LibISDB\Thirdparty\fdk-aac
+        git fetch --depth 1 origin ${{env.GIT_FDK_AAC_REF}}
+        git reset --hard FETCH_HEAD
+        cd ..\..\
+        msbuild -maxCpuCount -target:Build -property:Configuration="Release_MD" -property:Platform="x86" Projects\LibISDB.sln
+        msbuild -maxCpuCount -target:Build -property:Configuration="Release_MD" -property:Platform="x64" Projects\LibISDB.sln
 
 #    - name: Build
 #      working-directory: ${{env.GITHUB_WORKSPACE}}
