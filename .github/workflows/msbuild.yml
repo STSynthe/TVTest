@@ -35,7 +35,7 @@ jobs:
 
     - name: Sets
       run: |
-        "Get-ChildItem env:"
+        Get-ChildItem env:
 
 #    - name: Pre-Build
 #      working-directory: ${{env.GITHUB_WORKSPACE}}
