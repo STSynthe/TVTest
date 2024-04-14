@@ -30,7 +30,7 @@ jobs:
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v2
       with:
-        vs-version: '[17)'
+        vs-version: '17'
 
     - name: Sets
       run: set
