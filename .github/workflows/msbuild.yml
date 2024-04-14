@@ -34,7 +34,8 @@ jobs:
         msbuild-architecture: 'x64'
 
     - name: Sets
-      run: set
+      run: |
+        "Get-ChildItem env:"
 
 #    - name: Pre-Build
 #      working-directory: ${{env.GITHUB_WORKSPACE}}
