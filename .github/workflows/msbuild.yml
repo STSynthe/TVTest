@@ -57,7 +57,7 @@ jobs:
         git remote add origin https://github.com/mstorsjo/fdk-aac.git
         git fetch --depth 1 origin ${{env.GIT_FDK_AAC_REF}}
         git reset --hard FETCH_HEAD
-        cd ..\..\..\
+        cd ..\..\..\..\
         echo %cd%
         msbuild -maxCpuCount -target:Build -property:Configuration=${{env.BUILD_CONFIGURATION}} -property:Platform=x86 src\LibISDB\Projects\LibISDB.sln
 
