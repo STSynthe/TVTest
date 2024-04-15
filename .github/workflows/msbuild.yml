@@ -23,6 +23,10 @@ env:
 permissions:
   contents: read
 
+defaults:
+  run:
+    shell: cmd
+
 jobs:
   build:
     runs-on: windows-2022
@@ -39,21 +43,19 @@ jobs:
 
     - name: Sets
       run: |
-        Get-ChildItem env:
-        Get-ChildItem .
+        set
 
     - name: Pre-Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: |
-        Write-Host (Get-Location).Path
-        Set-Location src
+        cd src
         git clone -b develop --depth 1 https://github.com/DBCTRADO/LibISDB.git LibISDB
-        Set-Location LibISDB\Thirdparty\fdk-aac
+        cd LibISDB\Thirdparty\fdk-aac
         git init
         git remote add origin https://github.com/mstorsjo/fdk-aac.git
         git fetch --depth 1 origin ${{env.GIT_FDK_AAC_REF}}
         git reset --hard FETCH_HEAD
-        Set-Location ..\..\..\
+        cd ..\..\..\
         msbuild -maxCpuCount -target:Build -property:Configuration=${{env.BUILD_CONFIGURATION}} -property:Platform=x86 src\Projects\LibISDB.sln
 
     - name: Build
