@@ -25,7 +25,7 @@ permissions:
 
 defaults:
   run:
-    shell: cmd
+    shell: pwsh
 
 jobs:
   build:
@@ -41,24 +41,16 @@ jobs:
         vs-version: 17
         msbuild-architecture: x64
 
-    - name: Sets
-      run: |
-        set
-        dir
-
     - name: Pre-Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: |
-        @echo on
-        cd src
+        Set-Location src
         git clone -b develop --depth 1 https://github.com/DBCTRADO/LibISDB.git LibISDB
-        cd LibISDB\Thirdparty\fdk-aac
-        git init
-        git remote add origin https://github.com/mstorsjo/fdk-aac.git
-        git fetch --depth 1 origin ${{env.GIT_FDK_AAC_REF}}
-        git reset --hard FETCH_HEAD
-        cd ..\..\..\..\
-        echo %cd%
+        Set-Location LibISDB
+        git submodule update --init Thirdparty/fdk-aac
+        Set-Location Thirdparty\fdk-aac
+        git checkout ${{env.GIT_FDK_AAC_REF}}
+        Set-Location ..\..\..\..\
         msbuild -maxCpuCount -target:Build -property:Configuration=${{env.BUILD_CONFIGURATION}} -property:Platform=x86 src\LibISDB\Projects\LibISDB.sln
 
     - name: Build
@@ -67,3 +59,5 @@ jobs:
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: |
         msbuild -maxCpuCount -target:Build -property:Configuration=${{env.BUILD_CONFIGURATION}} -property:Platform=Win32 src\TVTest.sln
+
+#    - name: Packing
