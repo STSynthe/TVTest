@@ -28,17 +28,19 @@ jobs:
     runs-on: windows-2022
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/@v4
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v2
       with:
-        vs-version: '17'
-        msbuild-architecture: 'x64'
+        vs-version: 17
+        msbuild-architecture: x64
 
     - name: Sets
       run: |
         Get-ChildItem env:
+        Get-ChildItem
 
     - name: Pre-Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
