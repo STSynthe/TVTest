@@ -49,7 +49,7 @@ jobs:
     - name: Pre-Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: |
-        echo %cd%
+        @echo on
         cd src
         git clone -b develop --depth 1 https://github.com/DBCTRADO/LibISDB.git LibISDB
         cd LibISDB\Thirdparty\fdk-aac
@@ -57,7 +57,8 @@ jobs:
         git remote add origin https://github.com/mstorsjo/fdk-aac.git
         git fetch --depth 1 origin ${{env.GIT_FDK_AAC_REF}}
         git reset --hard FETCH_HEAD
-        cd ${{env.GITHUB_WORKSPACE}}
+        cd ..\..\..\
+        echo %cd%
         msbuild -maxCpuCount -target:Build -property:Configuration=${{env.BUILD_CONFIGURATION}} -property:Platform=x86 src\LibISDB\Projects\LibISDB.sln
 
     - name: Build
