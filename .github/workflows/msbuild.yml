@@ -44,10 +44,12 @@ jobs:
     - name: Sets
       run: |
         set
+        dir
 
     - name: Pre-Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: |
+        echo %cd%
         cd src
         git clone -b develop --depth 1 https://github.com/DBCTRADO/LibISDB.git LibISDB
         cd LibISDB\Thirdparty\fdk-aac
