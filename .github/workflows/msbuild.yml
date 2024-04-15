@@ -45,7 +45,7 @@ jobs:
     - name: Pre-Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: |
-        cd src
+        cd TVTest\src
         git clone -b develop --depth 1 https://github.com/DBCTRADO/LibISDB.git LibISDB
         cd LibISDB\Thirdparty\fdk-aac
         git init
@@ -54,10 +54,11 @@ jobs:
         git reset --hard FETCH_HEAD
         cd ..\..\..\
         msbuild -maxCpuCount -target:Build -property:Configuration=${{env.BUILD_CONFIGURATION}} -property:Platform=x86 src\Projects\LibISDB.sln
-        msbuild -maxCpuCount -target:Build -property:Configuration=${{env.BUILD_CONFIGURATION}} -property:Platform=x64 src\Projects\LibISDB.sln
 
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: msbuild -maxCpuCount -target:Build -property:Configuration=${{env.BUILD_CONFIGURATION}} -property:Platform=Win32 src\TVTest.sln
+      run: |
+        cd TVTest
+        msbuild -maxCpuCount -target:Build -property:Configuration=${{env.BUILD_CONFIGURATION}} -property:Platform=Win32 src\TVTest.sln
